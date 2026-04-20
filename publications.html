@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angelo Maria Rivolta — Publications</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0e0d;
+  --bg-card: #161412;
+  --bg-card-hover: #1c1a17;
+  --border: #272420;
+  --border-hover: #3a3530;
+  --text-primary: #ede8df;
+  --text-secondary: #8c8478;
+  --text-muted: #5a5550;
+  --accent: #c8a96e;
+  --accent-dim: rgba(200,169,110,0.12);
+  --accent-border: rgba(200,169,110,0.35);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+header { border-bottom: 1px solid var(--border); padding: 52px 0 36px; }
+.header-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+h1 {
+  font-family: 'EB Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+.header-subtitle {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+}
+.header-links { display: flex; gap: 24px; }
+.header-links a {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.18s;
+}
+.header-links a:hover { color: var(--accent); }
+.stats { display: flex; gap: 40px; padding-top: 28px; }
+.stat-number {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.9rem;
+  color: var(--text-primary);
+  display: block;
+  line-height: 1;
+}
+.stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 3px;
+  display: block;
+}
+
+/* Filters */
+.filters {
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.filter-sep { width: 1px; height: 18px; background: var(--border); margin: 0 6px; align-self: center; }
+.filter-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 4px 11px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+}
+.filter-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+.filter-btn.active {
+  background: var(--accent-dim);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+/* Publications */
+.publications { padding: 36px 0 80px; }
+.year-section { margin-bottom: 52px; }
+.year-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.year-label {
+  font-family: 'EB Garamond', serif;
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  white-space: nowrap;
+}
+.year-line { flex: 1; height: 1px; background: var(--border); }
+
+/* Card */
+.pub-card {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 18px 22px;
+  margin-bottom: 8px;
+  background: var(--bg-card);
+  transition: border-color 0.18s, background 0.18s;
+}
+.pub-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+.pub-card.hidden { display: none; }
+.pub-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 5px;
+}
+.pub-title {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.4;
+  flex: 1;
+}
+.pub-title a { color: inherit; text-decoration: none; }
+.pub-title a:hover { color: var(--accent); }
+.pub-title.needs-confirm { font-style: italic; color: var(--text-secondary); }
+.pub-badges { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; align-items: flex-start; padding-top: 2px; }
+.badge {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border-radius: 2px;
+}
+.badge-en { background: rgba(29,80,65,0.45); color: #7abfa0; }
+.badge-it { background: rgba(90,35,35,0.5); color: #c08888; }
+.badge-published { background: rgba(60,100,70,0.2); color: #82b894; border: 1px solid rgba(60,100,70,0.3); }
+.badge-review { background: rgba(110,90,40,0.25); color: #c4a96b; border: 1px solid rgba(110,90,40,0.35); }
+.badge-forthcoming { background: rgba(40,75,120,0.25); color: #7aabcf; border: 1px solid rgba(40,75,120,0.35); }
+.badge-progress { background: rgba(75,50,110,0.25); color: #a47ac4; border: 1px solid rgba(75,50,110,0.35); }
+.pub-meta { font-size: 12.5px; color: var(--text-secondary); }
+.pub-venue { font-style: italic; }
+.pub-note { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+.pub-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.tag {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.035);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+.pub-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: none;
+  margin-top: 10px;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+}
+.pub-link:hover { opacity: 1; }
+.confirm-note {
+  display: inline-block;
+  font-size: 11px;
+  color: #c4a96b;
+  background: rgba(110,90,40,0.18);
+  border: 1px solid rgba(110,90,40,0.3);
+  padding: 2px 8px;
+  border-radius: 2px;
+  margin-top: 8px;
+}
+.no-results {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 56px;
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  display: none;
+}
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+footer a { color: var(--text-muted); text-decoration: none; }
+footer a:hover { color: var(--accent); }
+@media (max-width: 600px) {
+  h1 { font-size: 2.1rem; }
+  .pub-top { flex-direction: column; }
+  .pub-badges { justify-content: flex-start; }
+  .stats { gap: 24px; flex-wrap: wrap; }
+  .container { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-eyebrow">Research Archive</div>
+    <h1>Angelo Maria Rivolta</h1>
+    <p class="header-subtitle">Publications, Working Papers &amp; Research in Progress</p>
+    <div class="header-links">
+      <a href="https://www.linkedin.com/in/angelomariarivolta/" target="_blank">LinkedIn</a>
+      <a href="mailto:amrivolta02@gmail.com">amrivolta02@gmail.com</a>
+      <a href="https://www.unibo.it" target="_blank">University of Bologna</a>
+    </div>
+    <div class="stats">
+      <div>
+        <span class="stat-number" id="count-published">—</span>
+        <span class="stat-label">Published</span>
+      </div>
+      <div>
+        <span class="stat-number">2</span>
+        <span class="stat-label">Under Review / Forthcoming</span>
+      </div>
+      <div>
+        <span class="stat-number" id="count-total">—</span>
+        <span class="stat-label">Total works</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="filters">
+    <button class="filter-btn active" data-filter="status" data-value="all">All</button>
+    <button class="filter-btn" data-filter="status" data-value="published">Published</button>
+    <button class="filter-btn" data-filter="status" data-value="under-review">Under review</button>
+    <button class="filter-btn" data-filter="status" data-value="forthcoming">Forthcoming</button>
+    <button class="filter-btn" data-filter="status" data-value="in-progress">In progress</button>
+    <div class="filter-sep"></div>
+    <button class="filter-btn active" data-filter="lang" data-value="all">All languages</button>
+    <button class="filter-btn" data-filter="lang" data-value="EN">English</button>
+    <button class="filter-btn" data-filter="lang" data-value="IT">Italian</button>
+  </div>
+
+  <div class="publications" id="publications">
+
+    <!-- ── 2026 ── -->
+    <div class="year-section">
+      <div class="year-header">
+        <span class="year-label">2026</span>
+        <div class="year-line"></div>
+      </div>
+
+      <div class="pub-card" data-status="in-progress" data-lang="EN">
+        <div class="pub-top">
+          <div class="pub-title">Behind the Peacekeeping Façade: Russian Illiberal Peacebuilding and Contestation of the Liberal Order in the Post-Soviet Space</div>
+          <div class="pub-badges">
+            <span class="badge badge-en">EN</span>
+            <span class="badge badge-progress">In progress</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">MA Thesis — University of Bologna</span> · Expected December 2026
+        </div>
+        <div class="pub-note">Supervisor: Prof. Roberto Belloni · Erasmus research component at Uppsala University, Dept. of Peace and Conflict Research</div>
+        <div class="pub-tags">
+          <span class="tag">Peacekeeping</span>
+          <span class="tag">Russian foreign policy</span>
+          <span class="tag">Post-Soviet space</span>
+          <span class="tag">Norm contestation</span>
+          <span class="tag">Liberal order</span>
+          <span class="tag">Civilian protection</span>
+        </div>
+      </div>
+
+      <div class="pub-card" data-status="under-review" data-lang="EN">
+        <div class="pub-top">
+          <div class="pub-title">Security in a Post-Liberal Order: Human Security and the Re-Prioritization of State Authority — Libya, Syria and MINUSMA in Mali</div>
+          <div class="pub-badges">
+            <span class="badge badge-en">EN</span>
+            <span class="badge badge-review">Under review</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">Studi Internazionali, CSI Review</span> · Under review
+        </div>
+        <div class="pub-tags">
+          <span class="tag">Peace operations</span>
+          <span class="tag">Human security</span>
+          <span class="tag">Norm dynamics</span>
+          <span class="tag">English School</span>
+          <span class="tag">Libya</span>
+          <span class="tag">Mali</span>
+          <span class="tag">MINUSMA</span>
+        </div>
+      </div>
+
+      <div class="pub-card" data-status="forthcoming" data-lang="EN">
+        <div class="pub-top">
+          <div class="pub-title">The Russian Unmaking of Sovereignty in Ukraine: From Passportization to Civilizational Sovereignty</div>
+          <div class="pub-badges">
+            <span class="badge badge-en">EN</span>
+            <span class="badge badge-forthcoming">Forthcoming</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">IE International Policy Review × Sciences Po</span> · Forthcoming
+        </div>
+        <div class="pub-tags">
+          <span class="tag">Russia</span>
+          <span class="tag">Ukraine</span>
+          <span class="tag">Sovereignty</span>
+          <span class="tag">Lawfare</span>
+          <span class="tag">Passportization</span>
+          <span class="tag">Post-Soviet space</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 2025 ── -->
+    <div class="year-section">
+      <div class="year-header">
+        <span class="year-label">2025</span>
+        <div class="year-line"></div>
+      </div>
+
+      <div class="pub-card" data-status="published" data-lang="EN">
+        <div class="pub-top">
+          <div class="pub-title"><a href="https://www.hikmasummit.com/archive/conflictmanagement" target="_blank">The Convergence of Russian Authoritarian Conflict Management and Trump's Transactional Peace</a></div>
+          <div class="pub-badges">
+            <span class="badge badge-en">EN</span>
+            <span class="badge badge-published">Published</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">Hikma</span> · 2025
+        </div>
+        <div class="pub-tags">
+          <span class="tag">Russian foreign policy</span>
+          <span class="tag">Conflict management</span>
+          <span class="tag">US foreign policy</span>
+          <span class="tag">Ukraine</span>
+        </div>
+        <a href="https://www.hikmasummit.com/archive/conflictmanagement" target="_blank" class="pub-link">Read ↗</a>
+      </div>
+
+      <div class="pub-card" data-status="published" data-lang="EN">
+        <div class="pub-top">
+          <div class="pub-title"><a href="https://www.hikmasummit.com/archive/liberal-peace" target="_blank">What After Liberal Peace? Toward Pragmatic Peace Operations</a></div>
+          <div class="pub-badges">
+            <span class="badge badge-en">EN</span>
+            <span class="badge badge-published">Published</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">Hikma</span> · 2025
+        </div>
+        <div class="pub-tags">
+          <span class="tag">Peace operations</span>
+          <span class="tag">Liberal peacebuilding</span>
+          <span class="tag">Norm dynamics</span>
+        </div>
+        <a href="https://www.hikmasummit.com/archive/liberal-peace" target="_blank" class="pub-link">Read ↗</a>
+      </div>
+
+      <div class="pub-card" data-status="published" data-lang="EN">
+        <div class="pub-top">
+          <div class="pub-title"><a href="https://studi-internazionali.org/over-the-heads-of-kyiv-the-flawed-peace-process-in-ukraine/" target="_blank">Over the Heads of Kyiv: The Flawed Peace Process in Ukraine</a></div>
+          <div class="pub-badges">
+            <span class="badge badge-en">EN</span>
+            <span class="badge badge-published">Published</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">Centro Studi Internazionali (CSI)</span> · 2025 · also in <span class="pub-venue">Studi Internazionali</span>, Issue 5, pp. 8–11
+        </div>
+        <div class="pub-tags">
+          <span class="tag">Ukraine</span>
+          <span class="tag">Peace process</span>
+          <span class="tag">Russia</span>
+          <span class="tag">Conflict resolution</span>
+        </div>
+        <a href="https://studi-internazionali.org/over-the-heads-of-kyiv-the-flawed-peace-process-in-ukraine/" target="_blank" class="pub-link">Read ↗</a>
+        <a href="https://studi-internazionali.org/wp-content/uploads/2025/08/Studi-Internazionali_no.5.pdf" target="_blank" class="pub-link" style="margin-left:12px;">Journal PDF ↗</a>
+      </div>
+
+      <div class="pub-card" data-status="published" data-lang="EN">
+        <div class="pub-top">
+          <div class="pub-title"><a href="https://studi-internazionali.org/understanding-the-trump-doctrinethe-business-of-foreign-policy/" target="_blank">Understanding the Trump Doctrine: The Business of Foreign Policy</a></div>
+          <div class="pub-badges">
+            <span class="badge badge-en">EN</span>
+            <span class="badge badge-published">Published</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">Centro Studi Internazionali (CSI)</span> · 2025 · also in <span class="pub-venue">Studi Internazionali</span>, Issue 6, pp. 1–4
+        </div>
+        <div class="pub-tags">
+          <span class="tag">US foreign policy</span>
+          <span class="tag">Trump</span>
+          <span class="tag">Foreign policy analysis</span>
+        </div>
+        <a href="https://studi-internazionali.org/understanding-the-trump-doctrinethe-business-of-foreign-policy/" target="_blank" class="pub-link">Read ↗</a>
+        <a href="https://studi-internazionali.org/wp-content/uploads/2025/12/RIVISTA-NUMERO-6-Dicembre-2025-1.pdf" target="_blank" class="pub-link" style="margin-left:12px;">Journal PDF ↗</a>
+      </div>
+
+      <div class="pub-card" data-status="published" data-lang="EN">
+        <div class="pub-top">
+          <div class="pub-title"><a href="https://www.hikmasummit.com/archive/italia" target="_blank">Italy's Quest for Status: Historical Continuity and the Limits of Meloni's Foreign Policy</a></div>
+          <div class="pub-badges">
+            <span class="badge badge-en">EN</span>
+            <span class="badge badge-published">Published</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">Hikma</span> · 2025
+        </div>
+        <div class="pub-tags">
+          <span class="tag">Italian foreign policy</span>
+          <span class="tag">Status seeking</span>
+          <span class="tag">Foreign policy analysis</span>
+        </div>
+        <a href="https://www.hikmasummit.com/archive/italia" target="_blank" class="pub-link">Read ↗</a>
+      </div>
+
+      <div class="pub-card" data-status="published" data-lang="IT">
+        <div class="pub-top">
+          <div class="pub-title"><a href="https://studi-internazionali.org/wp-content/uploads/2025/03/Studi-Internazionali_marzo-2025.pdf#page=37" target="_blank">Missioni militari internazionali come strumento di politica estera: il caso italiano</a></div>
+          <div class="pub-badges">
+            <span class="badge badge-it">IT</span>
+            <span class="badge badge-published">Published</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">Studi Internazionali</span>, Issue 4 · March 2025 · pp. 37–40
+        </div>
+        <div class="pub-tags">
+          <span class="tag">Italian foreign policy</span>
+          <span class="tag">Military missions</span>
+          <span class="tag">Peace operations</span>
+        </div>
+        <a href="https://studi-internazionali.org/wp-content/uploads/2025/03/Studi-Internazionali_marzo-2025.pdf#page=37" target="_blank" class="pub-link">View PDF ↗</a>
+      </div>
+    </div>
+
+    <!-- ── 2024 ── -->
+    <div class="year-section">
+      <div class="year-header">
+        <span class="year-label">2024</span>
+        <div class="year-line"></div>
+      </div>
+
+      <div class="pub-card" data-status="published" data-lang="IT">
+        <div class="pub-top">
+          <div class="pub-title"><a href="https://iari.site/2024/09/30/il-ritorno-alla-multipolarita-nel-mediterraneo-limportanza-geopolitica-e-securitaria/" target="_blank">Il ritorno alla multipolarità nel Mediterraneo: l'importanza geopolitica e securitaria</a></div>
+          <div class="pub-badges">
+            <span class="badge badge-it">IT</span>
+            <span class="badge badge-published">Published</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">IARI — Institute of Analysts of International Relations</span> · September 2024
+        </div>
+        <div class="pub-tags">
+          <span class="tag">Mediterranean</span>
+          <span class="tag">Multipolarity</span>
+          <span class="tag">Geopolitics</span>
+        </div>
+        <a href="https://iari.site/2024/09/30/il-ritorno-alla-multipolarita-nel-mediterraneo-limportanza-geopolitica-e-securitaria/" target="_blank" class="pub-link">Read ↗</a>
+      </div>
+
+      <div class="pub-card" data-status="published" data-lang="IT">
+        <div class="pub-top">
+          <div class="pub-title"><a href="https://iari.site/2024/08/26/il-futuro-dellegemonia-americana-in-un-mondo-multipolare/" target="_blank">Il futuro dell'egemonia americana in un mondo multipolare</a></div>
+          <div class="pub-badges">
+            <span class="badge badge-it">IT</span>
+            <span class="badge badge-published">Published</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">IARI — Institute of Analysts of International Relations</span> · August 2024
+        </div>
+        <div class="pub-tags">
+          <span class="tag">US hegemony</span>
+          <span class="tag">Multipolarity</span>
+          <span class="tag">Great power competition</span>
+        </div>
+        <a href="https://iari.site/2024/08/26/il-futuro-dellegemonia-americana-in-un-mondo-multipolare/" target="_blank" class="pub-link">Read ↗</a>
+      </div>
+
+      <div class="pub-card" data-status="published" data-lang="IT">
+        <div class="pub-top">
+          <div class="pub-title"><a href="https://iari.site/2024/06/22/lo-stato-della-lotta-al-terrorismo-jihadista-in-europa/" target="_blank">Lo stato della lotta al terrorismo jihadista in Europa</a></div>
+          <div class="pub-badges">
+            <span class="badge badge-it">IT</span>
+            <span class="badge badge-published">Published</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">IARI — Institute of Analysts of International Relations</span> · June 2024
+        </div>
+        <div class="pub-tags">
+          <span class="tag">Counter-terrorism</span>
+          <span class="tag">European security</span>
+          <span class="tag">Jihadism</span>
+        </div>
+        <a href="https://iari.site/2024/06/22/lo-stato-della-lotta-al-terrorismo-jihadista-in-europa/" target="_blank" class="pub-link">Read ↗</a>
+      </div>
+
+      <div class="pub-card" data-status="published" data-lang="IT">
+        <div class="pub-top">
+          <div class="pub-title"><a href="https://iari.site/2024/04/05/le-vie-della-sicurezza-italiana-nato-ue-e-mediterraneo-allargato/" target="_blank">Le vie della sicurezza italiana: NATO, UE e Mediterraneo allargato</a></div>
+          <div class="pub-badges">
+            <span class="badge badge-it">IT</span>
+            <span class="badge badge-published">Published</span>
+          </div>
+        </div>
+        <div class="pub-meta">
+          <span class="pub-venue">IARI — Institute of Analysts of International Relations</span> · April 2024
+        </div>
+        <div class="pub-tags">
+          <span class="tag">Italian foreign policy</span>
+          <span class="tag">NATO</span>
+          <span class="tag">Mediterranean security</span>
+        </div>
+        <a href="https://iari.site/2024/04/05/le-vie-della-sicurezza-italiana-nato-ue-e-mediterraneo-allargato/" target="_blank" class="pub-link">Read ↗</a>
+      </div>
+    </div>
+
+    <div class="no-results" id="no-results">No publications match the selected filters.</div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Angelo Maria Rivolta &nbsp;·&nbsp; <a href="mailto:amrivolta02@gmail.com">amrivolta02@gmail.com</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/angelomariarivolta/" target="_blank">LinkedIn</a></p>
+    <p style="margin-top:5px;">Last updated April 2026</p>
+  </div>
+</footer>
+
+<script>
+  let activeStatus = 'all';
+  let activeLang = 'all';
+  const cards = document.querySelectorAll('.pub-card');
+
+  document.getElementById('count-published').textContent =
+    Array.from(cards).filter(c => c.dataset.status === 'published').length;
+  document.getElementById('count-total').textContent = cards.length;
+
+  function applyFilters() {
+    let n = 0;
+    cards.forEach(c => {
+      const ok = (activeStatus === 'all' || c.dataset.status === activeStatus)
+               && (activeLang === 'all' || c.dataset.lang === activeLang);
+      c.classList.toggle('hidden', !ok);
+      if (ok) n++;
+    });
+    document.querySelectorAll('.year-section').forEach(s => {
+      s.style.display = Array.from(s.querySelectorAll('.pub-card')).some(c => !c.classList.contains('hidden')) ? '' : 'none';
+    });
+    document.getElementById('no-results').style.display = n === 0 ? 'block' : 'none';
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const g = btn.dataset.filter, v = btn.dataset.value;
+      document.querySelectorAll(`[data-filter="${g}"]`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (g === 'status') activeStatus = v;
+      if (g === 'lang') activeLang = v;
+      applyFilters();
+    });
+  });
+</script>
+</body>
+</html>
